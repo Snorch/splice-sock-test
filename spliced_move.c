@@ -4,12 +4,12 @@
 
 #include "spliced_move.h"
 
-int spliced_move(int fd_in, int fd_out)
+int spliced_move(int fd_in, int fd_out, long long size)
 {
 	int ret;
 	int p[2];
 	struct stat st;
-	int len;
+	long long len;
 
 	ret = pipe(p);
 	if (ret < 0) {
@@ -24,11 +24,14 @@ int spliced_move(int fd_in, int fd_out)
 	}
 
 	if ((st.st_mode & S_IFMT) == S_IFSOCK) {
-		len = 25;
+		len = 33554431;
 	} else {
 		len = st.st_size;
 	}
-	printf("Input len = %d|%d\n", len, st.st_size);
+	//if (size > 0 && size < len)
+	if (size > 0)
+		len = size;
+	//printf("Input len = %d|%d|%Ld\n", len, st.st_size, size);
 
 	while(len > 0) {
 		int chunk = __IO_BUFSIZE;

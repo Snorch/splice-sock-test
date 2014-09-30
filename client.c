@@ -28,16 +28,20 @@ static int get_sockaddr_in(struct sockaddr_in *addr) {
 
 int main(int argc, char *argv[])
 {
+	long long size = 0;
 	int ret;
 	int sk, ask = -1;
 	struct sockaddr_in saddr;
 	int in;
 
 	if (argc < 2) {
-		printf("Need to enter ip of server\n");
+		printf("Need to enter ip of server and may enter send size in bytes\n");
 		return 0;
 	}
 	serv_addr = argv[1];
+
+	if (argc >= 3)
+		size = strtoll(argv[2], NULL, 10);
 
 	printf("Starting client to connect %s on port %d\n", argv[1], SERV_PORT);
 
@@ -65,7 +69,7 @@ int main(int argc, char *argv[])
 		goto out;
 	}
 
-	ret = spliced_move(in, sk);
+	ret = spliced_move(in, sk, size);
 	if (ret < 0)
 		printf("Can not send file to socket\n");
 
