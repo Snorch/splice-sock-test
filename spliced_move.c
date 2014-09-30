@@ -6,13 +6,10 @@
 
 int spliced_move(int fd_in, int fd_out)
 {
-	loff_t in_off = 0;
-	loff_t out_off = 0;
 	int ret;
 	int p[2];
 	struct stat st;
 	int len;
-	int buf_size = __IO_BUFSIZE; /* Max splice buffer size */
 
 	ret = pipe(p);
 	if (ret < 0) {
