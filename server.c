@@ -97,8 +97,9 @@ int main(int argc, char *argv[])
 	diff_time(&t2, &t1);
 
 	printf("OK %d.%06d %Ld\n", t2.tv_sec, t2.tv_usec, size);
-	close(out);
 out:
+	close(ask);
+	close(out);
 	close(sk);
 	return ret;
 }
